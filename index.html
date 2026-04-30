@@ -3,162 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GenAI Leader 指南</title>
+    <title>GenAI Leader 認證助手</title>
     
     <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIkdvb2dsZSBDbG91ZCBHZW5BSSBMZWFkZXIiLAogICJzaG9ydF9uYW1lIjogIkdlbkFJIExlYWRlciIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmZmZmZmIiwKICAidGhlbWVfY29sb3ciOiAiIzQyODVmNCIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImh0dHBzOi8vY2RuLWljb25zLXBuZy5mbGF0aWNvbi5jb20vNTEyLzMwMC8zMDAyMjEucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="GenAI Leader">
 
     <style>
-        :root {
-            --google-blue: #4285f4;
-            --google-red: #ea4335;
-            --google-yellow: #fbbc05;
-            --google-green: #34a853;
-        }
-        body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background: #f8f9fa; color: #202124; padding-bottom: 70px; }
-        
-        /* App Bar */
-        .app-bar { background: white; padding: 15px 20px; font-weight: 700; font-size: 1.1rem; border-bottom: 1px solid #dadce0; position: sticky; top: 0; z-index: 100; display: flex; align-items: center; }
+        :root { --google-blue: #4285f4; --google-red: #ea4335; --google-yellow: #fbbc05; --google-green: #34a853; }
+        body { margin: 0; font-family: -apple-system, sans-serif; background: #f8f9fa; color: #202124; padding-bottom: 80px; }
+        .app-bar { background: white; padding: 15px 20px; font-weight: 700; border-bottom: 1px solid #dadce0; position: sticky; top: 0; z-index: 100; display: flex; align-items: center; }
         .app-bar .dot { height: 10px; width: 10px; border-radius: 50%; margin-right: 10px; background: var(--google-blue); }
-
-        /* 內容卡片 */
         .container { padding: 10px; }
-        .card { background: white; margin-bottom: 15px; padding: 20px; border-radius: 16px; border: 1px solid #e0e0e0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        h2 { font-size: 1.15rem; margin-top: 0; color: #1a73e8; display: flex; align-items: center; gap: 8px; }
-        h3 { font-size: 1rem; color: #3c4043; margin-bottom: 8px; }
-        p, li { font-size: 0.95rem; color: #5f6368; line-height: 1.6; }
-        ul { padding-left: 20px; margin: 10px 0; }
+        .card { background: white; margin-bottom: 15px; padding: 20px; border-radius: 16px; border: 1px solid #e0e0e0; }
+        h2 { font-size: 1.1rem; color: #1a73e8; margin-top: 0; }
+        p { font-size: 0.95rem; color: #5f6368; line-height: 1.5; }
         
-        /* 標籤 */
-        .tag { display: inline-block; background: #e8f0fe; color: #1967d2; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; margin-right: 5px; margin-bottom: 5px; font-weight: 500; }
-        .accent-blue { border-left: 5px solid var(--google-blue); }
-        .accent-green { border-left: 5px solid var(--google-green); }
-        .accent-red { border-left: 5px solid var(--google-red); }
+        /* 測驗樣式 */
+        .quiz-item { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .option { display: block; background: #f1f3f4; padding: 12px; border-radius: 8px; margin-top: 8px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; border: 1px solid transparent; }
+        .option:active { background: #e8f0fe; border-color: var(--google-blue); }
+        .option.selected { background: #e8f0fe; border-color: var(--google-blue); color: #1a73e8; font-weight: bold; }
+        #quiz-result { display: none; text-align: center; padding: 20px; border-radius: 12px; margin-top: 20px; }
 
-        /* 底部導覽列 (像真的 App 一樣) */
-        .nav-bar { position: fixed; bottom: 0; width: 100%; background: white; border-top: 1px solid #dadce0; display: flex; justify-content: space-around; padding: 10px 0; z-index: 1000; }
-        .nav-item { text-align: center; font-size: 0.7rem; color: #5f6368; text-decoration: none; flex: 1; border: none; background: none; }
+        /* 導覽列 */
+        .nav-bar { position: fixed; bottom: 0; width: 100%; background: white; border-top: 1px solid #dadce0; display: flex; padding: 10px 0; }
+        .nav-item { text-align: center; font-size: 0.7rem; color: #5f6368; flex: 1; border: none; background: none; }
         .nav-item.active { color: var(--google-blue); font-weight: bold; }
-        .nav-icon { font-size: 1.2rem; display: block; margin-bottom: 2px; }
-
-        /* 隱藏內容頁面 */
+        .nav-icon { font-size: 1.2rem; display: block; }
         .page { display: none; }
         .page.active { display: block; }
-
-        /* 資源連結按鈕 */
-        .btn-link { display: block; background: #f1f3f4; color: #1a73e8; padding: 12px; border-radius: 8px; text-decoration: none; margin-top: 10px; font-size: 0.9rem; text-align: center; border: 1px solid #dadce0; }
+        .btn { background: var(--google-blue); color: white; border: none; padding: 12px 24px; border-radius: 25px; font-weight: bold; width: 100%; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="app-bar">
-        <div class="dot"></div> GenAI Leader 認證指南
-    </div>
+    <div class="app-bar"><div class="dot"></div> GenAI Leader 助手</div>
 
     <div class="container">
-        
+        <!-- 概述頁 -->
         <div id="home" class="page active">
-            <div class="card accent-blue">
-                <h2>1. 這張證照是什麼？</h2>
-                <p>定位：面向「能把生成式 AI 說清楚、用在組織中」的非純工程角色（適合 PM、顧問、營運、主管）。</p>
-                <div class="tag">非技術優先</div> <div class="tag">商業落地</div>
-            </div>
-
             <div class="card">
-                <h2>2. 適合哪些同事？</h2>
-                <ul>
-                    <li><b>產品/專案/顧問：</b>想推動 AI 專案導入者。</li>
-                    <li><b>PM/BA/Ops：</b>需將需求翻譯成執行方案者。</li>
-                    <li><b>Sales/CS/行銷：</b>需包裝 AI 價值者。</li>
-                </ul>
+                <h2>認證簡介</h2>
+                <p>這張證照面向能把生成式 AI 說清楚、用在組織中的非純工程角色。</p>
+                <p><b>適合對象：</b>PM、顧問、部門主管、Sales[cite: 3]。</p>
             </div>
-
-            <div class="card accent-green">
-                <h2>3. 考試核心佔比</h2>
-                <p>這是一場 90 分鐘的情境選擇題挑戰：</p>
-                <ul>
-                    <li><b>35%：</b>Google Cloud 產品選型</li>
-                    <li><b>30%：</b>生成式 AI 核心基礎</li>
-                    <li><b>20%：</b>輸出改進技巧 (Prompt/RAG)</li>
-                    <li><b>15%：</b>商業策略與 AI 治理</li>
-                </ul>
+            <div class="card" style="border-left: 5px solid var(--google-yellow);">
+                <h2>考試重點</h2>
+                <p>情境選擇題為主，考驗你在企業場景中的選型與風險控管能力[cite: 3]。</p>
             </div>
         </div>
 
-        <div id="tech" class="page">
+        <!-- 測驗頁 -->
+        <div id="quiz" class="page">
             <div class="card">
-                <h2>4. 觀念地圖 (必須掌握)</h2>
-                <h3>價值四象限</h3>
-                <div class="tag">Create</div> <div class="tag">Summarize</div> 
-                <div class="tag">Discover</div> <div class="tag">Automate</div>
-                <p style="margin-top:10px;"><b>克服限制的方式（熱門考點）：</b></p>
-                <ul>
-                    <li><b>Grounding：</b>讓輸出可被驗證。</li>
-                    <li><b>RAG：</b>帶入外部即時知識。</li>
-                    <li><b>Fine-tuning：</b>提升領域專業度。</li>
-                    <li><b>HITL：</b>高風險情境的人類介入。</li>
-                </ul>
-            </div>
-
-            <div class="card accent-red">
-                <h2>7. 常見情境考點</h2>
-                <ul>
-                    <li>什麼時候用 Prompt 就夠，何時要 RAG？</li>
-                    <li>如何衡量導入成效 (KPI / ROI)？</li>
-                    <li>如何避免 Prompt Injection 與模型偏誤？</li>
-                    <li>什麼場景必須要人類審核？</li>
-                </ul>
+                <h2>適配度快速檢測</h2>
+                <div id="quiz-container">
+                    <div class="quiz-item">
+                        <p>1. 當主管問「為什麼要用 GenAI 而不是傳統程式？」你的直覺反應是：</p>
+                        <div class="option" onclick="select(0, 20, this)">A. 解釋它可以處理非結構化數據並創造新內容</div>
+                        <div class="option" onclick="select(0, 0, this)">B. 告訴他這只是現在的流行趨勢</div>
+                    </div>
+                    <div class="quiz-item">
+                        <p>2. 你是否願意學習如何向工程團隊「翻譯」業務需求？</p>
+                        <div class="option" onclick="select(1, 20, this)">A. 是，這是我強項或想學的能力</div>
+                        <div class="option" onclick="select(1, 0, this)">B. 否，我只想負責寫程式或只管業績</div>
+                    </div>
+                    <div class="quiz-item">
+                        <p>3. 面對 AI 可能產生的「幻覺」，你認為身為 Leader 最重要的是：</p>
+                        <div class="option" onclick="select(2, 20, this)">A. 建立 Grounding 機制與人類審核流程 (HITL)</div>
+                        <div class="option" onclick="select(2, 0, this)">B. 祈禱使用者不會發現</div>
+                    </div>
+                    <div class="quiz-item">
+                        <p>4. 你對 Google Cloud 的產品（如 Vertex AI）有基本認識或學習興趣嗎？</p>
+                        <div class="option" onclick="select(3, 20, this)">A. 有，我知道它們在企業端的價值</div>
+                        <div class="option" onclick="select(3, 5, this)">B. 沒聽過，也不太想了解產品細節</div>
+                    </div>
+                    <div class="quiz-item">
+                        <p>5. 關於 AI 倫理與治理，你的看法是：</p>
+                        <div class="option" onclick="select(4, 20, this)">A. 這是確保企業安全落地的核心</div>
+                        <div class="option" onclick="select(4, 0, this)">B. 這是阻礙創新、浪費時間的規定</div>
+                    </div>
+                    <button class="btn" onclick="calculate()">看結果</button>
+                </div>
+                <div id="quiz-result"></div>
             </div>
         </div>
 
+        <!-- 資源頁 -->
         <div id="plan" class="page">
-            <div class="card accent-blue">
-                <h2>5. 準備節奏建議</h2>
-                <p><b>0 基礎：</b>2-3 週 (每天 30-60 分鐘)</p>
-                <p><b>有經驗：</b>1-2 週即可</p>
-                <hr style="border:0; border-top:1px solid #eee;">
-                <p><b>學習路徑：</b>Exam Guide → Learning Path → Study Guide → Mock Test。</p>
-            </div>
-
             <div class="card">
-                <h2>9. 官方資源連結</h2>
-                <a href="https://cloud.google.com/learn/certification/generative-ai-leader" class="btn-link" target="_blank">🔗 認證官方首頁</a>
-                <a href="https://www.cloudskillsboost.google/paths/1951" class="btn-link" target="_blank">📚 官方課程 (Skills Boost)</a>
-                <a href="https://services.google.com/fh/files/misc/generative_ai_leader_study_guide_english.pdf" class="btn-link" target="_blank">📖 官方複習指南 (PDF)</a>
+                <h2>準備資源[cite: 3]</h2>
+                <p>• 建議時間：1-3 週</p>
+                <p>• 核心技巧：RAG, Grounding, Responsible AI</p>
+                <a href="https://cloud.google.com/learn/certification/generative-ai-leader" style="display:block; margin-top:10px; color:var(--google-blue);">官方認證頁面 →</a>
             </div>
         </div>
-
     </div>
 
     <nav class="nav-bar">
-        <button class="nav-item active" onclick="showPage('home', this)">
-            <span class="nav-icon">🏠</span> 概述
-        </button>
-        <button class="nav-item" onclick="showPage('tech', this)">
-            <span class="nav-icon">💡</span> 技術
-        </button>
-        <button class="nav-item" onclick="showPage('plan', this)">
-            <span class="nav-icon">📅</span> 計畫
-        </button>
+        <button class="nav-item active" onclick="showPage('home', this)"><span class="nav-icon">🏠</span>首頁</button>
+        <button class="nav-item" onclick="showPage('quiz', this)"><span class="nav-icon">📝</span>檢測</button>
+        <button class="nav-item" onclick="showPage('plan', this)"><span class="nav-icon">📅</span>資源</button>
     </nav>
 
     <script>
-        // 頁面切換邏輯
-        function showPage(pageId, btn) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            
-            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            window.scrollTo(0, 0); // 切換後回到頂部
+        let scores = [0, 0, 0, 0, 0];
+        function select(index, value, el) {
+            scores[index] = value;
+            let siblings = el.parentElement.querySelectorAll('.option');
+            siblings.forEach(s => s.classList.remove('selected'));
+            el.classList.add('selected');
         }
 
-        // 註冊 Service Worker 讓它能被手機安裝 (符合 PWA 標準)
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGZ1bmN0aW9uKGV2ZW50KSB7IGV2ZW50LnJlc3BvbmRXaXRoKGZldGNoKGV2ZW50LnJlcXVlc3QpKTsgfSk7');
+        function calculate() {
+            let total = scores.reduce((a, b) => a + b, 0);
+            let res = document.getElementById('quiz-result');
+            let container = document.getElementById('quiz-container');
+            container.style.display = 'none';
+            res.style.display = 'block';
+            
+            let msg = "";
+            if(total >= 80) {
+                res.style.background = "#e6f4ea";
+                msg = `<h3>得分：${total} 🌟</h3><p>你就是我們要找的人！你具備極佳的 AI 領導潛力與風險意識，強烈建議報考。</p>`;
+            } else if(total >= 60) {
+                res.style.background = "#fef7e0";
+                msg = `<h3>得分：${total} ⚡</h3><p>不錯！你已經有基本概念，但建議先研讀官方 Study Guide 補強產品與治理細節。</p>`;
+            } else {
+                res.style.background = "#fce8e6";
+                msg = `<h3>得分：${total} ☕</h3><p>目前可能不太適合。這張證照需要較多策略思考，建議先從基礎課程跑起。</p>`;
+            }
+            res.innerHTML = msg + '<button class="btn" onclick="location.reload()">重新檢測</button>';
+        }
+
+        function showPage(id, btn) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            window.scrollTo(0,0);
         }
     </script>
 </body>
