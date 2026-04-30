@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GenAI Leader App</title>
+    
+    <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIkdvb2dsZSBDbG91ZCBHZW5BSSBMZWFkZXIiLAogICJzaG9ydF9uYW1lIjogIkdlbkFJIExlYWRlciIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmZmZmZmIiwKICAidGhlbWVfY29sb3ciOiAiIzQyODVmNCIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImh0dHBzOi8vY2RuLWljb25zLXBuZy5mbGF0aWNvbi5jb20vNTEyLzMwMC8zMDAyMjEucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="GenAI Leader">
+
+    <style>
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f1f3f4; }
+        .app-bar { background: #4285f4; color: white; padding: 15px; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .card { background: white; margin: 15px; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        h2 { color: #1a73e8; font-size: 1.2rem; margin-top: 0; border-left: 4px solid #34a853; padding-left: 10px; }
+        p { color: #5f6368; line-height: 1.5; font-size: 0.95rem; }
+        .tag { display: inline-block; background: #e8f0fe; color: #1967d2; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-top: 10px; font-weight: 500; }
+        .footer { text-align: center; color: #9aa0a6; font-size: 0.8rem; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+    <div class="app-bar">GenAI Leader 認證指南</div>
+
+    <div class="card">
+        <h2>為什麼要考這張證照？</h2>
+        <p>這不是給工程師考的，而是給 PM、主管與顧問。目的是讓你學會如何將生成式 AI 轉化為商業價值。</p>
+        <span class="tag">#商業領導力</span> <span class="tag">#GoogleCloud</span>
+    </div>
+
+    <div class="card">
+        <h2>核心技術關鍵字</h2>
+        <p><b>Grounding (落地)：</b>讓 AI 說話有憑有據。</p>
+        <p><b>RAG：</b>給 AI 一本書，讓它根據書本內容回答問題。</p>
+        <p><b>Responsible AI：</b>確保 AI 安全、公平。 </p>
+    </div>
+
+    <div class="card" style="background: linear-gradient(135deg, #4285f4, #34a853); color: white;">
+        <h2 style="color: white; border-color: white;">準備好了嗎？</h2>
+        <p style="color: rgba(255,255,255,0.9);">將此頁面「加入主畫面」，即可隨時開始學習。</p>
+    </div>
+
+    <div class="footer">v1.0.0 Powered by PWA Technology</div>
+
+    <script>
+        // 註冊 Service Worker 讓它符合 PWA 安裝標準
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGZ1bmN0aW9uKGV2ZW50KSB7IGV2ZW50LnJlc3BvbmRXaXRoKGZldGNoKGV2ZW50LnJlcXVlc3QpKTsgfSk7');
+        }
+    </script>
+</body>
+</html>
